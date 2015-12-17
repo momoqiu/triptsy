@@ -1,0 +1,23 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    {% for post in posts %}
+      <div class="post">
+
+        <div class="date-right">
+          <p>Last modified on {{ post.last_modify_date|date:'d-b-Y' }}</p>
+        </div>
+        <div class="post-title">
+          <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+        </div>
+        <div class="post-text">
+          <p>{{ post.text|linebreaks }}</p>
+        </div>
+        <a href="{% url 'blog.views.post_detail' pk=post.pk %}">Comments: {{ post.approved_comments.count }}
+          {% if user.is_authenticated and post.unapproved_comments.count > 0 %}
+            | Unapproved Comments:{{ post.unapproved_comments.count }}
+          {% endif %}
+        </a>
+      </div>
+    {% endfor %}
+{% endblock %}
